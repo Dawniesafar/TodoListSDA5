@@ -34,7 +34,7 @@ public class Controller {
                 String s  = stringScanner();
                 do {
                     System.out.println("Edit due date format it as dd-MM-yyy: ");
-                }while (!isValidDateV2(s));
+                }while (!isValidDateV3(s));
                 //isValidDateV2(stringScanner());
                 t.setDueDate(s);
                 System.out.println("to mark as done type true and for awaiting type false: ");
@@ -228,54 +228,54 @@ public class Controller {
         }
     }
 
-    public LocalDate parseDate(String dateString) {
-        boolean isValid = isValidDate(dateString);
-        LocalDate localDate = LocalDate.now();
-        if (isValid) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            localDate = LocalDate.parse(dateString, formatter);
-
-            while(localDate.compareTo(LocalDate.now()) < 0)
-            {
-                System.out.println("Invalid date! don't set an old date...");
-            }
-        }
-        return localDate;
-    }
-        public boolean isValidDate (final String dateString1)
-        {
-            String[] dateIntoArray = dateString1.split("-");
-            int year = Integer.parseInt(dateIntoArray[0]);
-            int month = dateIntoArray.length > 1 ? Integer.parseInt(dateIntoArray[1]) : 1;
-            int day = dateIntoArray.length > 2 ? Integer.parseInt(dateIntoArray[2]) : 2;
-            if (1 < day || day > 31 || 1 > month || month > 12) {
-                System.out.println("Enter a valid day/month as of format: dd-MM-yyyy");
-            }
-            try {
-                LocalDate.of(year, month, day);
-
-                return true;
-        } catch(DateTimeException e){
-            return false;
-        }
-    }
-    public boolean isValidDateV2(String dateString2)
-    {
-        LocalDate Date;
-        String[] dateIntoArray = dateString2.split("-");
-        int year = Integer.parseInt(dateIntoArray[0]);
-        int month = dateIntoArray.length > 1 ? Integer.parseInt(dateIntoArray[1]) : 1;
-        int day = dateIntoArray.length > 2 ? Integer.parseInt(dateIntoArray[2]) : 2;
-//        int month = Integer.parseInt(dateIntoArray[1]);
-//        int day = Integer.parseInt(dateIntoArray[2]);
-        Date = LocalDate.of(year, month, day);
-
-        if (Date.compareTo(LocalDate.now()) >= 0)
-        {
-            return true;
-        }
-        else return false;
-    }
+//    public LocalDate parseDate(String dateString) {
+//        boolean isValid = isValidDate(dateString);
+//        LocalDate localDate = LocalDate.now();
+//        if (isValid) {
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//            localDate = LocalDate.parse(dateString, formatter);
+//
+//            while(localDate.compareTo(LocalDate.now()) < 0)
+//            {
+//                System.out.println("Invalid date! don't set an old date...");
+//            }
+//        }
+//        return localDate;
+//    }
+//    public boolean isValidDate (final String dateString1)
+//        {
+//            String[] dateIntoArray = dateString1.split("-");
+//            int year = Integer.parseInt(dateIntoArray[0]);
+//            int month = dateIntoArray.length > 1 ? Integer.parseInt(dateIntoArray[1]) : 1;
+//            int day = dateIntoArray.length > 2 ? Integer.parseInt(dateIntoArray[2]) : 2;
+//            if (1 < day || day > 31 || 1 > month || month > 12) {
+//                System.out.println("Enter a valid day/month as of format: dd-MM-yyyy");
+//            }
+//            try {
+//                LocalDate.of(year, month, day);
+//
+//                return true;
+//        } catch(DateTimeException e){
+//            return false;
+//        }
+//    }
+//    public boolean isValidDateV2(String dateString2)
+//    {
+//        LocalDate Date;
+//        String[] dateIntoArray = dateString2.split("-");
+//        int year = Integer.parseInt(dateIntoArray[0]);
+//        int month = dateIntoArray.length > 1 ? Integer.parseInt(dateIntoArray[1]) : 1;
+//        int day = dateIntoArray.length > 2 ? Integer.parseInt(dateIntoArray[2]) : 2;
+////        int month = Integer.parseInt(dateIntoArray[1]);
+////        int day = Integer.parseInt(dateIntoArray[2]);
+//        Date = LocalDate.of(year, month, day);
+//
+//        if (Date.compareTo(LocalDate.now()) >= 0)
+//        {
+//            return true;
+//        }
+//        else return false;
+//    }
     public boolean isValidDateV3(String dateString3) {
         String[] dateIntoArray = dateString3.split("-");
 //        int year = Integer.parseInt(dateIntoArray[2]);
