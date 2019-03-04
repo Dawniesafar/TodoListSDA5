@@ -19,21 +19,31 @@ public class Main {
                     t.setTitle(ctr.stringScanner());
                     System.out.println("Enter a project: ");
                     t.setProject(ctr.stringScanner());
-                    System.out.println("Set a valid due date: ");
-                    t.setDueDate(ctr.stringScanner());
+                    //System.out.println("Set due date format it as dd-MM-yyy: ");
+                    String s;
+                    do {
+                        System.out.println("Set a valid due date as the format dd-MM-yyy: ");
+                        s = ctr.stringScanner();
+                    }while (!(ctr.isValidDateV3(s)));
+                    //isValidDateV2(stringScanner());
+                    t.setDueDate(s);
                     ctr.addTask(t);
                     input = false;
                     break;
 
                 case 2:
-                    System.out.print("Choose Task ID to edit..." + "\n" + "ID" + "\t" + "Title" + "\n");
-                    ctr.tasks.stream().forEach(x ->
-                            System.out.print(x.getTaskId() + "\t" + x.getTitle() + "\n"));
-                    Task taskToEdit = ctr.getTaskById(ctr.intScanner());
-                    System.out.println("Edit task title: ");
-                    taskToEdit.setTitle(ctr.stringScanner());
-                    System.out.println("Edit due date: ");
-                    taskToEdit.setDueDate(ctr.stringScanner());
+                    ctr.printTasks();
+                    System.out.println("Choose 1 to edit or 2 to remove task: ");
+                    userCase = ctr.intScanner();
+                    if(userCase == 1) {
+                        System.out.print("Choose Task ID to edit" + "\n");
+                        ctr.updateTask(ctr.intScanner());
+                    }
+                    else if(userCase == 2){
+                        System.out.print("Choose Task ID to remove" + "\n");
+                        ctr.removeTask(ctr.intScanner());
+                    }
+
                     input = false;
                     break;
 
@@ -52,14 +62,20 @@ public class Main {
                     break;
 
                 case 4:
+                    ctr.printTasks();
+                    System.out.println("Choose task ID to mark as DONE!");
+                    ctr.tasks.stream().filter(x->x.getTaskId() == ctr.intScanner()).findFirst().get().markAsDone();
                     input = false;
+                    break;
 
-                case 0:
+                case 5:
+                    ctr.save();
                     input = true;
                     break;
 
                 default:
                     input = true;
+                    break;
             }
         }while (!input);
     }

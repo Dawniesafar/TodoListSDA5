@@ -1,12 +1,12 @@
 package com.company;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Task {
     private int taskId;
     private String title;
     private String project;
-    private boolean check;
+    private boolean done; //Completed! In Progress! Awaiting
     private String dueDate;
 
     public Task(){
@@ -27,8 +27,8 @@ public class Task {
     {
         this.project = prorject;
     }
-    public void setCheck(boolean check){
-        this.check = check;
+    public void setDone(boolean done){
+        this.done = done;
     }
     public int getTaskId()
     {
@@ -46,13 +46,13 @@ public class Task {
     {
         return this.project;
     }
-    public boolean getCheck()
+    public boolean getDone()
     {
-        return check;
+        return done;
     }
-    public void markAsDone(boolean title)
+    public void markAsDone()
     {
-        check = true;
+        done = true;
     }
 
 }
