@@ -1,13 +1,15 @@
 package com.company;
 
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Task {
+public class Task implements Serializable {
     private int taskId;
     private String title;
     private String project;
     private boolean done; //Completed! In Progress! Awaiting
-    private String dueDate;
+    private LocalDate dueDate;
 
     public Task(){
     }
@@ -15,7 +17,7 @@ public class Task {
     {
         this.title = title;
     }
-    public void setDueDate(String dueDate)
+    public void setDueDate(LocalDate dueDate)
     {
         this.dueDate = dueDate;
     }
@@ -38,7 +40,7 @@ public class Task {
     {
         return title;
     }
-    public String getDueDate()
+    public LocalDate getDueDate()
     {
         return dueDate;
     }
