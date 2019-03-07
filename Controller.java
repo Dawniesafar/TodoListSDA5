@@ -6,7 +6,6 @@ import java.util.*;
 
 public class Controller {
 
-    private static int id = 0;
     ArrayList<Task> tasks;
     Scanner scnr = new Scanner(System.in);
 
@@ -22,43 +21,44 @@ public class Controller {
     }
 
     //edit task in task list
-    public void updateTask(int id)
-    {
-        Task task = getTaskById(id);
-        System.out.println("Edit task title: ");
-        task.setTitle(scnr.next());
-        System.out.println("Edit task project: ");
-        task.setProject(scnr.next());
-        System.out.println("Enter due date of format: dd-MM-yyyy");
-        LocalDate date = null;
-        do {
-            date = isValidDate(scnr.next());
-        }while(date == null);
-        task.setDueDate(date);
-        task.setDueDate(date);
+    public void editTask(int id) {
+        Iterator it = tasks.iterator();
+        while(it.hasNext()) {
+            Task task = (Task) it.next();
+            if (task.getTaskId() == id){
+                task.setTitle(scnr.next());
+            System.out.println("Edit task title: ");
+            task.setTitle(scnr.next());
+            System.out.println("Edit task project: ");
+            task.setProject(scnr.next());
+            System.out.println("Enter due date of format: dd-MM-yyyy");
+            LocalDate date = null;
+            do {
+                date = isValidDate(scnr.next());
+            } while (date == null);
+            task.setDueDate(date);
+        }
+        }
     }
     //removing a task from task list
     public void removeTask(int id) {
-        for (Task t : tasks) {
-            if (t.getTaskId() == id) {
-                System.out.println("Task " + t.getTitle() + "is deleted!");
-                tasks.remove(t);
-            } else {
-                System.out.println("Enter a valid ID...");
-            }
+        Iterator it = tasks.iterator();
+        while(it.hasNext())
+        {
+            Task task = (Task) it.next();
+            if(task.getTaskId() == id)
+                it.remove();
         }
     }
-
     //retrieve task by its ID
-    //Not user method, it may come handy later
     public Task getTaskById(int id) {
         Task task = new Task();
         for (Task t : tasks) {
-            if (t.getTaskId() == id)
+            if (t.getTaskId() == id) {
                 task = t;
-            else {
-                System.out.println("Enter a valid ID...");
+                break;
             }
+            else task = null;
         }
         return task;
     }
@@ -79,99 +79,10 @@ public class Controller {
                         "\t" + x.getProject() + "\t" + x.getDueDate() + "\t" + x.getDone()));
     }
 
-    //load method is the first method to be called when the project starts to load previous saved tasks
-//    public void load() {
-//        System.out.println(
-//                "(1) to add new task"
-//                        + "\n" + "(2) to edit a task"
-//                        + "\n" + "(3) show task list by project or due date"
-//                        + "\n" + "(4) to mark a task as DONE!"
-//                        + "\n" + "(5) to save and quit");
-//
-//        File fileName = new File("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoList.txt");
-//
-//        if (!fileName.exists()) {
-//            try {
-//                FileWriter fw = new FileWriter("TodoList.txt");
-//                BufferedWriter bw = new BufferedWriter(fw);
-//                bw.flush();
-//                bw.close();
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                System.out.println("File was not saved..");
-//            } finally {
-//            }
-//        } else {
-//            String stringListOfTasks = "";
-//            Task task;
-//            try {
-//                BufferedReader br = new BufferedReader(new FileReader(fileName));
-//                String line;
-//                while ((line = br.readLine()) != null) {
-//                    stringListOfTasks += (line);
-//                }
-//                br.close();
-//
-//                String[] charArrayOfTasks = stringListOfTasks.split(",");
-//                id = (Integer.parseInt(charArrayOfTasks[charArrayOfTasks.length - 5]));
-//
-//                for (int i = 0; i < charArrayOfTasks.length; ) {
-//                    task = new Task();
-//                    for (int j = 0; j < 5; j++) {
-//                        task.setId(Integer.parseInt(charArrayOfTasks[i]));
-//                        i++;
-//                        j++;
-//                        task.setTitle(charArrayOfTasks[i]);
-//                        i++;
-//                        j++;
-//                        task.setProject(charArrayOfTasks[i]);
-//                        i++;
-//                        j++;
-//                        task.setDueDate(charArrayOfTasks[i]);
-//                        i++;
-//                        j++;
-//                        task.setDone(Boolean.parseBoolean(charArrayOfTasks[i]));
-//                        i++;
-//                        j++;
-//                        tasks.add(task);
-//                    }
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                System.out.println("File is not reachable..");
-//            } finally {
-//                printTasks();
-//            }
-//        }
-//    }
-
-
-//    public void save() {
-//        File fileName = new File("/Users/dawnie/IdeaProjects/TodoListV2.0/TodoList.txt");
-//
-//        try {
-//            FileWriter fw = new FileWriter("TodoList.txt");
-//            BufferedWriter bw = new BufferedWriter(fw);
-//            for (Task task : tasks) {
-//                bw.write(task.getTaskId() + "," + task.getTitle() + "," + task.getProject() + ","
-//                        + task.getDueDate() + "," + task.getDone() + "," + "\n");
-//            }
-//            bw.flush();
-//            bw.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("File was not saved..");
-//        } finally {
-//        }
-//    }
-
     //save the tasks and exit the app
     public void saveObject() {
         try {
-            FileOutputStream fos = new FileOutputStream("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoListV2.bin");
+            FileOutputStream fos = new FileOutputStream("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoList.bin");
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(tasks);
             os.close();
@@ -186,25 +97,21 @@ public class Controller {
         }
     }
     //load method is the first method to be called when the project starts to load previous saved tasks
-    public void loadObject()
-    {
-   System.out.println(
+    public void loadObject() {
+        System.out.println(
            "(1) to add new task"
            + "\n" + "(2) to edit a task"
-           + "\n" + "(3) to remove task"
+           + "\n" + "(3) to remove a task"
            + "\n" + "(4) to mark task as DONE!"
            + "\n" + "(5) show task list by project"
            + "\n" + "(6) show task list by due date"
-           + "\n" + "(7) to save and quit");
+           + "\n" + "(7) or any unspecified key to save and quit");
 
-    File fileName = new File("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoListV2.bin");
-        FileInputStream fos;
-        ObjectInputStream os;
+    File fileName = new File("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoList.bin");
+
         if (!fileName.exists()) {
         try {
-            fos = new FileInputStream("TodoListV2.bin");
-            os = new ObjectInputStream(fos);
-            os.close();
+            fileName = new File("TodoList.bin");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("File was not saved..");
@@ -212,8 +119,8 @@ public class Controller {
     }
         else {
         try {
-            fos = new FileInputStream("TodoListV2.bin");
-            os = new ObjectInputStream(fos);
+            FileInputStream fos = new FileInputStream("TodoList.bin");
+            ObjectInputStream os = new ObjectInputStream(fos);
             tasks = (ArrayList<Task>) os.readObject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -238,8 +145,7 @@ public class Controller {
         return localDate;
     }
 
-        public void printTasks()
-        {
+    public void printTasks() {
             System.out.println("ID" + "\t" + "Title" + "\t" + "Project" + "\t" + "Due Date" + "\t" + "is Done");
             tasks.stream().forEach(x-> System.out.println(x.getTaskId() + "\t" + x.getTitle() +
                     "\t" + x.getProject() + "\t" + x.getDueDate() +

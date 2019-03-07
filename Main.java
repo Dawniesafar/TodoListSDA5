@@ -32,21 +32,31 @@ public class Main {
 
                 case 2:
                     ctr.printTasks();
-                    System.out.println("Choose Task ID to edit" + "\n");
-                    ctr.updateTask(scnr.nextInt());
+                    System.out.println("Choose Task ID to edit");
+                    ctr.editTask(scnr.nextInt());
                     input = false;
                     break;
 
                 case 3:
-                    System.out.println("Choose Task ID to remove" + "\n");
-                    ctr.removeTask(scnr.nextInt());
+                    ctr.printTasks();
+                    Task removeTask = null;
+                    do {
+                        System.out.print("Choose Task ID to remove" + "\n");
+                        removeTask = ctr.getTaskById(scnr.nextInt());
+                    }while(removeTask == null);
+                    ctr.removeTask(removeTask.getTaskId());
                     input = false;
                     break;
 
                 case 4:
                     ctr.printTasks();
-                    System.out.println("Choose task ID to mark as DONE!");
-                    ctr.tasks.stream().filter(x->x.getTaskId() == scnr.nextInt()).findFirst().get().markAsDone();
+                    Task task = null;
+                    do {
+                        System.out.println("Choose valid task ID to mark as DONE!");
+                        task = ctr.getTaskById(scnr.nextInt());
+                    }while(task == null);
+                    int taskid = task.getTaskId();
+                    ctr.tasks.stream().filter(x->x.getTaskId() == taskid).findFirst().get().markAsDone();
                     input = false;
                     break;
 
@@ -71,6 +81,6 @@ public class Main {
                     input = true;
                     break;
             }
-        }while (!input || scnr.hasNextInt());
+        }while (!input && scnr.hasNextInt());
     }
 }
