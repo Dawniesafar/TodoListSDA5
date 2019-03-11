@@ -31,14 +31,14 @@ public class Main {
                     break;
 
                 case 2:
-                    ctr.printTasks();
+                    ctr.printTasks(ctr.tasks);
                     System.out.println("Choose Task ID to edit");
                     ctr.editTask(scnr.nextInt());
                     input = false;
                     break;
 
                 case 3:
-                    ctr.printTasks();
+                    ctr.printTasks(ctr.tasks);
                     Task removeTask = null;
                     do {
                         System.out.print("Choose Task ID to remove" + "\n");
@@ -49,12 +49,12 @@ public class Main {
                     break;
 
                 case 4:
-                    ctr.printTasks();
+                    ctr.printTasks(ctr.tasks);
                     Task task = null;
                     do {
                         System.out.println("Choose valid task ID to mark as DONE!");
                         task = ctr.getTaskById(scnr.nextInt());
-                    }while(task == null);
+                    } while(task == null);
                     int taskid = task.getTaskId();
                     ctr.tasks.stream().filter(x->x.getTaskId() == taskid).findFirst().get().markAsDone();
                     input = false;
@@ -72,14 +72,21 @@ public class Main {
                     break;
 
                 case 7:
+                    ctr.getDoneTasks();
+                    ctr.printTasks(ctr.doneTasks);
+                    input = false;
+                    break;
+
+                case 8:
                     ctr.saveObject();
                     input = true;
                     break;
 
                 default:
                     ctr.saveObject();
-                    input = true;
-                    break;
+                    System.out.println("Please enter a number from 1 to 8");
+                    input = false;
+
             }
         }while (!input && scnr.hasNextInt());
     }

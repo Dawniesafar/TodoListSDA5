@@ -1,6 +1,4 @@
 package com.company;
-
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -8,17 +6,14 @@ public class Task implements Serializable {
     private int taskId;
     private String title;
     private String project;
-    private boolean done; //Completed! In Progress! Awaiting
+    private boolean done = false; //Completed! In Progress! Awaiting
     private LocalDate dueDate;
 
-    public Task(){
-    }
-    public void setTitle(String title)
-    {
+    public Task(){ }
+    public void setTitle(String title) {
         this.title = title;
     }
-    public void setDueDate(LocalDate dueDate)
-    {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
     public void setId(int id)
@@ -29,11 +24,7 @@ public class Task implements Serializable {
     {
         this.project = prorject;
     }
-    public void setDone(boolean done){
-        this.done = done;
-    }
-    public int getTaskId()
-    {
+    public int getTaskId() {
         return this.taskId;
     }
     public String getTitle()
@@ -48,8 +39,7 @@ public class Task implements Serializable {
     {
         return this.project;
     }
-    public boolean getDone()
-    {
+    public boolean getDone() {
         return done;
     }
     public void markAsDone()
