@@ -1,0 +1,20 @@
+A simple to use app with a very simple menu as the following
+ "(1) to add new task
+  (2) to edit a task
+  (3) show task list by date or project"
+  (4) to mark a task as DONE!"
+  (5) to save and quit"
+  
+  Basically, user chooses the number of the option he/she wants the app to do. Every number will be doing the option assigned.
+  If you chose number 1, you will be able to add task, you will be asked for title, project to relate it to and of course a 
+  valid due date which format should be similar to "dd-MM-yyyy". The newly added task will always be marked as "Not DONE".
+  If you chose number 2, you will be able to edit the task. You will be given a list of tasks with their IDs, the ID of your
+  choosing will be used to retreive the task associated with -so make sure you chose the correct ID- Only then you will be 
+  asked to change the title, project and due date.
+  If you chose number 3, you will be able to see list of tasks as per project title or due date. After pushing number 3 option
+  you will get two more options which are, number 1 to sort tasks as per the project title and number 2 to sort tasks as per
+  the due date.
+  If you chose number 4, you will be able to choose a task by its uniqe ID and mark it as DONE task.
+  Last but not least, number 5, which is to save and quit the app. It is very important to press number 5 before exiting the
+  app, so you have all your tasks saved in a file for later usage.
+ 

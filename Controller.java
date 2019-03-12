@@ -14,6 +14,7 @@ public class Controller {
     public Controller() {
 
         tasks = new ArrayList<>();
+        doneTasks = new ArrayList<>();
     }
 
     //add a new task to task list
@@ -28,7 +29,6 @@ public class Controller {
         while(it.hasNext()) {
             Task task = (Task) it.next();
             if (task.getTaskId() == id){
-                task.setTitle(scnr.next());
             System.out.println("Edit task title: ");
             task.setTitle(scnr.next());
             System.out.println("Edit task project: ");
@@ -39,7 +39,14 @@ public class Controller {
                 date = isValidDate(scnr.next());
             } while (date == null);
             task.setDueDate(date);
+            updateTaskIds();
+            break;
         }
+            else if (task == null)
+            {
+                System.out.println("Please enter a valid task ID!");
+                editTask(scnr.nextInt());
+            }
         }
     }
 
@@ -72,38 +79,28 @@ public class Controller {
 
     //update taskId in arrayList of tasks to avoid duplications since taskId is
     //the index of the object in the arrayList
-    public void updateTaskIds()
-    {
+    public void updateTaskIds() {
         for(int i = 0; i < tasks.size(); i++)
             tasks.get(i).setId(i);
     }
+
     //shows done tasks
     public void getDoneTasks() {
         doneTasks = (ArrayList <Task>) tasks.stream().filter(x -> x.getDone() == true).collect(Collectors.toList());
     }
 
     //A method to sort tasks according to the due date associated with.
-    public void sortByDate() {
-        if (tasks.size() != 0) {
-            System.out.println("ID" + "\t" + "Title" + "\t" + "Project" + "\t" + "Due Date" + "\t" + "is Done");
-            tasks.stream().sorted(Comparator.comparing(Task::getDueDate)).forEach(x ->
-                    System.out.println(x.getTaskId() + "\t" + x.getTitle() +
-                            "\t" + x.getProject() + "\t" + x.getDueDate() + "\t" + x.getDone()));
-        }
-        else
-            System.out.println("There are no tasks to be shown!");
+    public void sortByDate(){
+            ArrayList<Task> sortedList = (ArrayList<Task>) tasks.stream().sorted(Comparator.comparing(Task::getDueDate))
+                    .collect(Collectors.toList());
+            printTasks(sortedList);
     }
 
     //A method to sort tasks as per the project related to.
-    public void sortByProject(String project) {
-        if (tasks.size() != 0) {
-            System.out.println("ID" + "\t" + "Title" + "\t" + "Project" + "\t" + "Due Date" + "\t" + "is Done");
-            tasks.stream().filter(x -> x.getProject().equals(project)).forEach(x ->
-                    System.out.println(x.getTaskId() + "\t" + x.getTitle() +
-                            "\t" + x.getProject() + "\t" + x.getDueDate() + "\t" + x.getDone()));
-        }
-        else
-            System.out.println("There are no tasks to be shown!");
+    public void sortByProject(String project){
+            ArrayList<Task> sortedList = (ArrayList<Task>) tasks.stream().filter(x -> x.getProject().equals(project))
+                    .collect(Collectors.toList());
+            printTasks(sortedList);
     }
 
     //save the tasks and exit the app
@@ -123,6 +120,7 @@ public class Controller {
 
         }
     }
+
     //load method is the first method to be called when the project starts to load previous saved tasks
     public void loadObject() {
 
@@ -182,9 +180,22 @@ public class Controller {
 
     //print list of tasks
     public void printTasks(ArrayList<Task> tasksToPrint) {
+        if(tasksToPrint.size() > 0) {
             System.out.println("ID" + "\t" + "Title" + "\t" + "Project" + "\t" + "Due Date" + "\t" + "is Done");
-        tasksToPrint.stream().forEach(x-> System.out.println(x.getTaskId() + "\t" + x.getTitle() +
+            tasksToPrint.stream().forEach(x -> System.out.println(x.getTaskId() + "\t" + x.getTitle() +
                     "\t" + x.getProject() + "\t" + x.getDueDate() +
                     "\t" + x.getDone()));
         }
+        else System.out.println("There are no tasks to be shown");
+        }
+
+    //user option-input restricted to numbers
+    public int ScanIsNum() {
+        int input = 0;
+        try {
+            input = Integer.parseInt(scnr.next());
+        } catch (Exception e){
+        }
+        return input;
+    }
 }
