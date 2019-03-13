@@ -86,7 +86,16 @@ public class Main {
 
                     default:
                         ctr.saveObject();
-                        System.out.println("Please Enter number from 1 to 8");
+                        System.out.println(
+                                "You have " + ctr.tasks.size() + " to do and " + ctr.doneTasks.size() + " are done!"
+                                        + "\n" + "(1) to add new task"
+                                        + "\n" + "(2) to edit a task"
+                                        + "\n" + "(3) to remove a task"
+                                        + "\n" + "(4) to mark task as DONE!"
+                                        + "\n" + "(5) show task list by project"
+                                        + "\n" + "(6) show task list by due date"
+                                        + "\n" + "(7) show DONE! task list"
+                                        + "\n" + "(8) or any unspecified key to save and quit");
                         input = false;
 
                 }

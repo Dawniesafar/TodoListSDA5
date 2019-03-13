@@ -25,28 +25,31 @@ public class Controller {
 
     //edit task in task list
     public void editTask(int id) {
-        Iterator it = tasks.iterator();
-        while(it.hasNext()) {
-            Task task = (Task) it.next();
-            if (task.getTaskId() == id){
-            System.out.println("Edit task title: ");
-            task.setTitle(scnr.next());
-            System.out.println("Edit task project: ");
-            task.setProject(scnr.next());
-            System.out.println("Enter due date of format: dd-MM-yyyy");
-            LocalDate date = null;
-            do {
-                date = isValidDate(scnr.next());
-            } while (date == null);
-            task.setDueDate(date);
-            updateTaskIds();
-            break;
-        }
-            else if (task == null)
-            {
-                System.out.println("Please enter a valid task ID!");
-                editTask(scnr.nextInt());
+        Task task = null;
+        if(id < tasks.size()) {
+            Iterator it = tasks.iterator();
+            while (it.hasNext()) {
+                task = (Task) it.next();
+                if (task.getTaskId() == id) {
+                    System.out.println("Edit task title: ");
+                    task.setTitle(scnr.next());
+                    System.out.println("Edit task project: ");
+                    task.setProject(scnr.next());
+                    System.out.println("Enter due date of format: dd-MM-yyyy");
+                    LocalDate date = null;
+                    do {
+                        date = isValidDate(scnr.next());
+                    } while (date == null);
+                    task.setDueDate(date);
+                    updateTaskIds();
+                    break;
+                }
             }
+        }
+        else if (id >= tasks.size())
+        {
+            System.out.println("Please enter a valid task ID!");
+            editTask(scnr.nextInt());
         }
     }
 

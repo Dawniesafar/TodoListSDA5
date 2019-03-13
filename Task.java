@@ -10,6 +10,7 @@ public class Task implements Serializable {
     private LocalDate dueDate;
 
     public Task(){ }
+
     public void setTitle(String title) {
         this.title = title;
     }
