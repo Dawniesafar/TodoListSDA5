@@ -10,10 +10,10 @@ public class Main {
         boolean input = false;
         Scanner scnr = new Scanner(System.in);
 
-        ctr.loadObject();
+        ctr.load();
 
             do {
-                int choice = ctr.ScanIsNum();
+                int choice = ctr.scanIsNum();
 
                 switch (choice) {
                     case 1:
@@ -33,14 +33,14 @@ public class Main {
                         break;
 
                     case 2:
-                        ctr.printTasks(ctr.tasks);
+                        ctr.printTasks(ctr.getTasks());
                         System.out.println("Choose Task ID to edit");
                         ctr.editTask(scnr.nextInt());
                         input = false;
                         break;
 
                     case 3:
-                        ctr.printTasks(ctr.tasks);
+                        ctr.printTasks(ctr.getTasks());
                         Task removeTask = null;
                         do {
                             System.out.print("Choose Task ID to remove" + "\n");
@@ -51,14 +51,14 @@ public class Main {
                         break;
 
                     case 4:
-                        ctr.printTasks(ctr.tasks);
+                        ctr.printTasks(ctr.getTasks());
                         Task task = null;
                         do {
                             System.out.println("Choose valid task ID to mark as DONE!");
                             task = ctr.getTaskById(scnr.nextInt());
                         } while (task == null);
                         int taskid = task.getTaskId();
-                        ctr.tasks.stream().filter(x -> x.getTaskId() == taskid).findFirst().get().markAsDone();
+                        ctr.getTasks().stream().filter(x -> x.getTaskId() == taskid).findFirst().get().markAsDone();
                         input = false;
                         break;
 
@@ -74,20 +74,19 @@ public class Main {
                         break;
 
                     case 7:
-                        ctr.getDoneTasks();
-                        ctr.printTasks(ctr.doneTasks);
+                        ctr.printTasks(ctr.setDoneTasks());
                         input = false;
                         break;
 
                     case 8:
-                        ctr.saveObject();
+                        ctr.save();
                         input = true;
                         break;
 
                     default:
-                        ctr.saveObject();
+                        ctr.save();
                         System.out.println(
-                                "You have " + ctr.tasks.size() + " to do and " + ctr.doneTasks.size() + " are done!"
+                                "You have " + ctr.getTasks().size() + " to do and " + ctr.setDoneTasks().size() + " are done!"
                                         + "\n" + "(1) to add new task"
                                         + "\n" + "(2) to edit a task"
                                         + "\n" + "(3) to remove a task"

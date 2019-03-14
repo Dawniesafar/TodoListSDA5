@@ -2,6 +2,9 @@ package com.company;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Task class represents task details 
+ */
 public class Task implements Serializable {
     private int taskId;
     private String title;
@@ -10,6 +13,13 @@ public class Task implements Serializable {
     private LocalDate dueDate;
 
     public Task(){ }
+    public Task(int id, String title, String pro, boolean done, LocalDate dueDate){
+    this.taskId = id;
+    this.title = title;
+    this.project = pro;
+    this.done = done;
+    this.dueDate = dueDate;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -21,9 +31,9 @@ public class Task implements Serializable {
     {
         this.taskId = id;
     }
-    public void setProject(String prorject)
+    public void setProject(String project)
     {
-        this.project = prorject;
+        this.project = project;
     }
     public int getTaskId() {
         return this.taskId;
