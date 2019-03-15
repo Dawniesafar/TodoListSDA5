@@ -21,19 +21,19 @@ public class Task implements Serializable {
     this.dueDate = dueDate;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
     public void setId(int id)
     {
         this.taskId = id;
     }
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public void setProject(String project)
     {
         this.project = project;
+    }
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
     public int getTaskId() {
         return this.taskId;
@@ -42,13 +42,13 @@ public class Task implements Serializable {
     {
         return title;
     }
-    public LocalDate getDueDate()
-    {
-        return dueDate;
-    }
     public String getProject()
     {
         return this.project;
+    }
+    public LocalDate getDueDate()
+    {
+        return dueDate;
     }
     public boolean getDone() {
         return done;

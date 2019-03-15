@@ -44,7 +44,7 @@ public class Main {
                         Task removeTask = null;
                         do {
                             System.out.print("Choose Task ID to remove" + "\n");
-                            removeTask = ctr.getTaskById(scnr.nextInt());
+                            removeTask = ctr.getTaskById(scnr.nextInt(),ctr.getTasks());
                         } while (removeTask == null);
                         ctr.removeTask(removeTask.getTaskId());
                         input = false;
@@ -55,7 +55,7 @@ public class Main {
                         Task task = null;
                         do {
                             System.out.println("Choose valid task ID to mark as DONE!");
-                            task = ctr.getTaskById(scnr.nextInt());
+                            task = ctr.getTaskById(scnr.nextInt(),ctr.getTasks());
                         } while (task == null);
                         int taskid = task.getTaskId();
                         ctr.getTasks().stream().filter(x -> x.getTaskId() == taskid).findFirst().get().markAsDone();
@@ -64,17 +64,17 @@ public class Main {
 
                     case 5:
                         System.out.println("Enter Project title: ");
-                        ctr.sortByProject(scnr.next());
+                        ctr.printTasks(ctr.sortByProject(scnr.next(), ctr.getTasks()));
                         input = false;
                         break;
 
                     case 6:
-                        ctr.sortByDate();
+                        ctr.printTasks(ctr.sortByDate(ctr.getTasks()));
                         input = false;
                         break;
 
                     case 7:
-                        ctr.printTasks(ctr.setDoneTasks());
+                        ctr.printTasks((ctr.setDoneTasks(ctr.getTasks())));
                         input = false;
                         break;
 
@@ -86,15 +86,16 @@ public class Main {
                     default:
                         ctr.save();
                         System.out.println(
-                                "You have " + ctr.getTasks().size() + " to do and " + ctr.setDoneTasks().size() + " are done!"
+                                "You have " + ctr.numOfPendingTasks(ctr.getTasks()) + " tasks to do and " +
+                                        ctr.setDoneTasks(ctr.getTasks()).size() + " tasks are done!"
                                         + "\n" + "(1) to add new task"
                                         + "\n" + "(2) to edit a task"
                                         + "\n" + "(3) to remove a task"
                                         + "\n" + "(4) to mark task as DONE!"
                                         + "\n" + "(5) show task list by project"
                                         + "\n" + "(6) show task list by due date"
-                                        + "\n" + "(7) show DONE! task list"
-                                        + "\n" + "(8) or any unspecified key to save and quit");
+                                        + "\n" + "(7) show DONE! tasks list"
+                                        + "\n" + "(8) to save and quit");
                         input = false;
 
                 }

@@ -1,4 +1,5 @@
 package com.company;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,13 +13,10 @@ import java.util.stream.Collectors;
 public class Controller {
 
     private ArrayList<Task> tasks;
-    private ArrayList<Task> doneTasks;
     private Scanner scnr = new Scanner(System.in);
 
     public Controller() {
-
         tasks = new ArrayList<>();
-        doneTasks = new ArrayList<>();
     }
 
     /**
@@ -26,7 +24,7 @@ public class Controller {
      * @param task task to add
      */
     public void addTask(Task task) {
-        this.tasks.add(task);
+        tasks.add(task);
         updateTaskIds();
     }
 
@@ -52,6 +50,7 @@ public class Controller {
                     } while (date == null);
                     task.setDueDate(date);
                     updateTaskIds();
+                    System.out.println("Task as been edited!");
                     break;
                 }
             }
@@ -74,6 +73,7 @@ public class Controller {
             Task task = (Task) it.next();
             if(task.getTaskId() == id){
                 it.remove();
+                System.out.println("Task has been removed successfully");
             break;
             }
         }
@@ -85,9 +85,9 @@ public class Controller {
      * @param id specifies id of task to be returned
      * @return task from task list as per its related id
      */
-    public Task getTaskById(int id) {
+    public Task getTaskById(int id, ArrayList<Task> getTaskList) {
         Task task = new Task();
-        for (Task t : tasks) {
+        for (Task t : getTaskList) {
             if (t.getTaskId() == id) {
                 task = t;
                 break;
@@ -109,20 +109,18 @@ public class Controller {
     /**
      * A method to sort tasks according to the due date associated with.
      */
-    public void sortByDate(){
-            ArrayList<Task> sortedList = (ArrayList<Task>) tasks.stream().sorted(Comparator.comparing(Task::getDueDate))
+    public ArrayList<Task> sortByDate(ArrayList<Task> taskList){
+            return (ArrayList<Task>) taskList.stream().sorted(Comparator.comparing(Task::getDueDate))
                     .collect(Collectors.toList());
-            printTasks(sortedList);
     }
 
     /**
      * a method to sort tasks as per the project related to
      * @param project specifies the project title takes String value
      */
-    public void sortByProject(String project){
-            ArrayList<Task> sortedList = (ArrayList<Task>) tasks.stream().filter(x -> x.getProject().equals(project))
+    public ArrayList<Task> sortByProject(String project, ArrayList<Task> taskList){
+           return  (ArrayList<Task>) taskList.stream().filter(x -> x.getProject().equals(project))
                     .collect(Collectors.toList());
-            printTasks(sortedList);
     }
 
     /**
@@ -130,7 +128,7 @@ public class Controller {
      */
     public void save() {
         try {
-            FileOutputStream fos = new FileOutputStream("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoList.bin");
+            FileOutputStream fos = new FileOutputStream("TodoList.bin");
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(tasks);
             os.close();
@@ -151,7 +149,7 @@ public class Controller {
      */
     public void load() {
 
-    File fileName = new File("/Users/dawnie/IdeaProjects/TodoListV3.0/TodoList.bin");
+    File fileName = new File("TodoList.bin");
 
         if (!fileName.exists()) {
             try {
@@ -166,7 +164,7 @@ public class Controller {
             FileInputStream fos = new FileInputStream("TodoList.bin");
             ObjectInputStream os = new ObjectInputStream(fos);
             tasks = (ArrayList<Task>) os.readObject();
-            setDoneTasks();
+            setDoneTasks(tasks);
             os.close();
 
         } catch (FileNotFoundException e){
@@ -186,15 +184,15 @@ public class Controller {
             System.out.println("\nThere are no tasks to be shown. Choose '1' to start adding your daily tasks");
 
         System.out.println(
-                "You have " + tasks.size() + " to do and " + this.doneTasks.size() + " are done!"
+                "You have " + numOfPendingTasks(getTasks()) + " tasks to do and " + setDoneTasks(getTasks()).size() + " tasks are done!"
                         + "\n" + "(1) to add new task"
                         + "\n" + "(2) to edit a task"
                         + "\n" + "(3) to remove a task"
                         + "\n" + "(4) to mark task as DONE!"
                         + "\n" + "(5) show task list by project"
                         + "\n" + "(6) show task list by due date"
-                        + "\n" + "(7) show DONE! task list"
-                        + "\n" + "(8) or any unspecified key to save and quit");
+                        + "\n" + "(7) show DONE! tasks list"
+                        + "\n" + "(8) to save and quit");
 }
 
     /**
@@ -219,14 +217,15 @@ public class Controller {
     }
 
     /**
+     *
      * @param tasksToPrint list of tasks to be printed
      */
     public void printTasks(ArrayList<Task> tasksToPrint) {
         if(tasksToPrint.size() > 0) {
-            System.out.println("ID" + "\t" + "Title" + "\t" + "Project" + "\t" + "Due Date" + "\t" + "is Done");
-            tasksToPrint.stream().forEach(x -> System.out.println(x.getTaskId() + "\t" + x.getTitle() +
-                    "\t" + x.getProject() + "\t" + x.getDueDate() +
-                    "\t" + x.getDone()));
+            System.out.println("ID" + "\t" + "   " + "Title" + "\t" +  "  " + "Project" + "\t" + "  " + "Due Date" + "\t" + "    " +  "is Done!");
+
+            tasksToPrint.stream().forEach( x-> System.out.printf("%s %10s %10s %15s %10s\n", x.getTaskId(), x.getTitle(),
+                    x.getProject(), x.getDueDate(), x.getDone()));
         }
         else System.out.println("There are no tasks to be shown");
         }
@@ -247,7 +246,7 @@ public class Controller {
     /**
      * retrieves tasks marked as DONE!
      */
-    public ArrayList<Task> setDoneTasks() {
+    public ArrayList<Task> setDoneTasks(ArrayList<Task> doneTasks ) {
         doneTasks = (ArrayList <Task>) tasks.stream().filter(x -> x.getDone() == true).collect(Collectors.toList());
         return doneTasks;
     }
@@ -258,5 +257,13 @@ public class Controller {
     public ArrayList<Task> getTasks()
     {
         return this.tasks;
+    }
+
+    /**
+     * @param myTasks specifies the List of tasks user wants to check
+     * @return number of undone tasks
+     */
+    public int numOfPendingTasks(ArrayList<Task> myTasks) {
+        return (int) myTasks.stream().filter(x-> x.getDone() == false).count();
     }
 }
